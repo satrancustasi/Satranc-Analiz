@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess PGN Analyzer</title>
+</head>
+<body>
+    <h1>Satranç PGN Yükle</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="pgn" accept=".pgn" required>
+        <button type="submit">Yükle ve Analiz Et</button>
+    </form>
+
+    {% if result %}
+    <h2>Hamleler:</h2>
+    <ul>
+        {% for move in result %}
+        <li>{{ move }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
