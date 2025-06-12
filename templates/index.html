@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Chess PGN Analyzer</title>
+    <meta charset="UTF-8">
+    <title>Satranç Analiz Aracı</title>
 </head>
 <body>
-    <h1>Satranç PGN Yükle</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="pgn" accept=".pgn" required>
-        <button type="submit">Yükle ve Analiz Et</button>
+    <h1>PGN Dosyası Yükle ve Analiz Et</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="pgn_file" required>
+        <input type="submit" value="Yükle ve Analiz Et">
     </form>
 
-    {% if result %}
-    <h2>Hamleler ve Analiz Skorları:</h2>
-    <ul>
-        {% for move, score in result %}
-        <li><strong>{{ move }}</strong> — {{ score }}</li>
-        {% endfor %}
-    </ul>
+    {% if moves %}
+        <h2>Hamleler ve Değerlendirmeler</h2>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>#</th>
+                <th>Hamle</th>
+                <th>Skor (Centipawn)</th>
+            </tr>
+            {% for idx, move in enumerate(moves, 1) %}
+                <tr>
+                    <td>{{ idx }}</td>
+                    <td>{{ move.move }}</td>
+                    <td>{{ move.eval }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     {% endif %}
 </body>
 </html>

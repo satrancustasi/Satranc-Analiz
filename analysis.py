@@ -1,25 +1,28 @@
 import chess.pgn
 import chess.engine
 
-def analyze_pgn(filepath, engine_path, depth=15):
-    results = []
-    engine = chess.engine.SimpleEngine.popen_uci(engine_path)
-
+def analyze_pgn(filepath, engine_path=None):
     with open(filepath) as f:
         game = chess.pgn.read_game(f)
-        board = game.board()
+    
+    board = game.board()
+    moves = []
 
-        for move in game.mainline_moves():
-            board.push(move)
-            info = engine.analyse(board, chess.engine.Limit(depth=depth))
-            score = info["score"].white()  # Beyaz perspektifinden skoru alıyoruz
-            if score.is_mate():
-                score_str = f"Mate in {score.mate()}"
-            else:
-                score_str = f"{score.score() / 100:.2f}"  # Centipawn'u puana çevir
+    engine = None
+    if engine_path:
+        engine = chess.engine.SimpleEngine.popen_uci(engine_path)
 
-            san_move = board.san(move)
-            results.append((san_move, score_str))
+    for move in game.mainline_moves():
+        san_move = board.san(move)  # önce SAN formatını al
+        board.push(move)            # sonra hamleyi uygula
+        move_info = {'move': san_move}
 
-    engine.quit()
-    return results
+        if engine:
+            info = engine.analyse(board, chess.engine.Limit(time=0.1))
+            move_info['eval'] = info['score'].white().score(mate_score=10000)
+        moves.append(move_info)
+
+    if engine:
+        engine.quit()
+
+    return moves
