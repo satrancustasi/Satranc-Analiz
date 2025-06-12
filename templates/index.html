@@ -11,10 +11,10 @@
     </form>
 
     {% if result %}
-    <h2>Hamleler:</h2>
+    <h2>Hamleler ve Analiz Skorları:</h2>
     <ul>
-        {% for move in result %}
-        <li>{{ move }}</li>
+        {% for move, score in result %}
+        <li><strong>{{ move }}</strong> — {{ score }}</li>
         {% endfor %}
     </ul>
     {% endif %}

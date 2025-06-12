@@ -1,3 +1,13 @@
+# Sanal ortam klasörü
 venv/
+
+# Python cache dosyaları
 __pycache__/
+*.py[cod]
+
+# Yüklenen dosyalar klasörü
 uploads/
+
+# PyCharm veya diğer IDE'lerin ayar dosyaları (isteğe bağlı)
+.idea/
+.vscode/
